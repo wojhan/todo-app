@@ -1,8 +1,9 @@
-from django.urls import path, include
-from rest_framework import routers
+from django.urls import path
 
-router = routers.DefaultRouter()
+from . import views
 
-urlpatterns = [
-    path("", include(router.urls)),
+urls = [
+    path("cases/", views.CaseList.as_view()),
+    path("cases/<int:pk>/", views.CaseDetail.as_view()),
+    path("cases/<int:case_pk>/tasks/", views.CaseTaskList.as_view()),
 ]

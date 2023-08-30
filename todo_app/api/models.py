@@ -43,7 +43,7 @@ class Task(models.Model):
         (2, "Done"),
     ]
 
-    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name="tasks")
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=600)
     status = models.IntegerField(
@@ -52,7 +52,7 @@ class Task(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    done_at = models.DateTimeField()
+    done_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"{self.case}: {self.title}"
