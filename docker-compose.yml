@@ -10,6 +10,15 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+  api:
+    build: ./todo_app
+    command: python3 manage.py runserver 0.0.0.0:8000
+    env_file:
+      - ./envs/django.env
+    ports:
+      - "8200:8000"
+    volumes:
+    - ./todo_app:/code
 
 volumes:
   pg_data:
