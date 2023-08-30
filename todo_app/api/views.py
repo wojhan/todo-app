@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from . import models, serializers
@@ -46,7 +47,8 @@ class CaseTaskList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         case_id = self.kwargs["case_pk"]
-        return models.Task.objects.filter(case_id=case_id)
+        case = get_object_or_404(models.Case.objects.filter(pk=case_id))
+        return models.Task.objects.filter(case=case)
 
     @extend_schema(
         description="Creates a new task for the given case. Tasks can not exist without case."
