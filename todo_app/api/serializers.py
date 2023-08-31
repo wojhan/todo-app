@@ -37,4 +37,4 @@ class TaskSerializer(serializers.ModelSerializer):
             "updated_at",
             "done_at",
         )
-        extra_kwargs = {"case": {"write_only": True}}
+        extra_kwargs = {"case": {"write_only": True}, "done_at": {"read_only": True}}

@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -53,6 +55,13 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     done_at = models.DateTimeField(null=True)
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if self.status == 2 and self.done_at is None:
+            self.done_at = datetime.datetime.now()
+        return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return f"{self.case}: {self.title}"
