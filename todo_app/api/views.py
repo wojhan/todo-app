@@ -70,3 +70,33 @@ class CaseTaskList(generics.ListCreateAPIView):
     @extend_schema(description="Getting list of task assigned to the user's case")
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.TaskSerializer
+    queryset = models.Task.objects.all()
+
+    @extend_schema(
+        description="Updates a task. It can be done only if the case is open"
+    )
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Updates a task. It can be done only if the case is open"
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Deletes a task. It can be done only if the case is open"
+    )
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.case.is_open:
+            return super().delete(request, *args, **kwargs)
+
+        return Response(
+            {"detail": "Tasks can be created or updated only in open cases"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
